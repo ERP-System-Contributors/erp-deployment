@@ -4,8 +4,7 @@
   "description": "This is the deployment instance of the erp-client running on port 8981",
   "main": "server.js",
   "scripts": {
-    "test": "forever start server.js",
-    "start": "node server.js"
+    "start": "forever start server.js"
   },
   "keywords": [
     "ERP",
