@@ -1,0 +1,12 @@
+2022-02-18 00:59:59,858 WARN  [MessageBroker-1] PoolBase: Hikari - Failed to validate connection org.postgresql.jdbc.PgConnection@33475a93 (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2022-02-18 00:59:59,872 WARN  [MessageBroker-1] PoolBase: Hikari - Failed to validate connection org.postgresql.jdbc.PgConnection@62270fc1 (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2022-02-18 00:59:59,878 WARN  [MessageBroker-1] PoolBase: Hikari - Failed to validate connection org.postgresql.jdbc.PgConnection@1bec6e94 (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2022-02-18 00:59:59,879 WARN  [MessageBroker-1] PoolBase: Hikari - Failed to validate connection org.postgresql.jdbc.PgConnection@1c301ee2 (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2022-02-18 00:59:59,880 WARN  [MessageBroker-1] PoolBase: Hikari - Failed to validate connection org.postgresql.jdbc.PgConnection@3cc0e3a8 (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2022-02-18 00:59:59,881 WARN  [MessageBroker-1] PoolBase: Hikari - Failed to validate connection org.postgresql.jdbc.PgConnection@6643aaf6 (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2022-02-18 00:59:59,883 WARN  [MessageBroker-1] PoolBase: Hikari - Failed to validate connection org.postgresql.jdbc.PgConnection@1e23f064 (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2022-02-18 00:59:59,884 WARN  [MessageBroker-1] PoolBase: Hikari - Failed to validate connection org.postgresql.jdbc.PgConnection@2f82a4c (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2022-02-18 00:59:59,885 WARN  [MessageBroker-1] PoolBase: Hikari - Failed to validate connection org.postgresql.jdbc.PgConnection@399e4418 (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2022-02-18 00:59:59,886 WARN  [MessageBroker-1] PoolBase: Hikari - Failed to validate connection org.postgresql.jdbc.PgConnection@42f14dc7 (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2022-02-18 06:28:56,042 WARN  [XNIO-1 task-1] AdviceTraits: Unauthorized: Full authentication is required to access this resource
+2022-02-18 06:29:13,461 WARN  [XNIO-1 task-1] AdviceTraits: Unauthorized: Full authentication is required to access this resource
