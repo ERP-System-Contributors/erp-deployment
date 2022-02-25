@@ -17,10 +17,9 @@
 #
 
 FROM node:14.18-alpine3.12
-WORKDIR /root/
-COPY package*.json ./
-RUN npm install
-COPY ./ .
+WORKDIR /opt/app
+COPY . /opt/app
+RUN cd /opt/app && npm install
 
 EXPOSE 8981
 
