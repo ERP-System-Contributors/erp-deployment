@@ -97,5 +97,5 @@ services:
       - ERP_SYSTEM_DEV_PORT=${ERP_SYSTEM_DEV_PORT}
       - ERP_CLIENT_DEV_PORT=${ERP_CLIENT_DEV_PORT}
     ports:
-      #- "8981:80"
-      - ${ERP_CLIENT_DEPLOYMENT_PROD_PORT}
+      - "8981:80"
+      #- ${ERP_CLIENT_DEPLOYMENT_PROD_PORT}
