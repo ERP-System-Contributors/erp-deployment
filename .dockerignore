@@ -1,2 +1,5 @@
 logs/
 node_modules/
+generated-reports/
+reports-directory/
+target/

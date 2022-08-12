@@ -21,7 +21,7 @@
 version: '3.3'
 services:
   erp-system-server:
-    image: ghacupha/erp-system:0.0.5-SNAPSHOT
+    image: ghacupha/erp-system:0.0.6-SNAPSHOT
     volumes:
       - ./logs/:/logs/
       - ./reports-directory/:/reports-directory/
@@ -51,11 +51,13 @@ services:
       - ERP_SYSTEM_DEV_MAIL_BASE_URL=${ERP_SYSTEM_DEV_MAIL_BASE_URL}
       - SECURITY_AUTHENTICATION_JWT_BASE64_SECRET=${SECURITY_AUTHENTICATION_JWT_BASE64_SECRET}
       - UPLOADS_SIZE=${UPLOADS_SIZE}
+      - SANDBOX_INSTANCE_URLS=${SANDBOX_INSTANCE_URLS}
       # - LOGGING_CONFIG=${LOGGING_CONFIG}
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:
-      - 8980:8980
+      #- 8980:8980
+      - - ${ERP_SERVER_DEPLOYMENT_PROD_PORT}
       #- 8977:8977
 #  erpsystem-postgresql:
 #    image: postgres:13.4
@@ -85,7 +87,7 @@ services:
       - 'discovery.type=single-node'
 
   erp-client-web:
-    image: ghacupha/erp-client:0.0.6-SNAPSHOT
+    image: ghacupha/erp-client:0.1.1-SNAPSHOT
     environment:
       # - SERVER_API_URL="http://localhost:8980/"
       # - SERVER_API_URL_URL=http://localhost:8980
@@ -96,6 +98,8 @@ services:
       - SERVER_API_WS_URL=${SERVER_API_WS_URL}
       - ERP_SYSTEM_DEV_PORT=${ERP_SYSTEM_DEV_PORT}
       - ERP_CLIENT_DEV_PORT=${ERP_CLIENT_DEV_PORT}
+      - SERVER_API_DOCKER_DEPLOY_INTERNAL_PORT=${SERVER_API_DOCKER_DEPLOY_INTERNAL_PORT};
+      - SERVER_API_DOCKER_DEPLOY_URL=${SERVER_API_DOCKER_DEPLOY_URL}
     ports:
-      - "8981:80"
-      #- ${ERP_CLIENT_DEPLOYMENT_PROD_PORT}
+      #- "8981:80"
+      - ${ERP_CLIENT_DEPLOYMENT_PROD_PORT}
