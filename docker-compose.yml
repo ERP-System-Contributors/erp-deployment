@@ -57,7 +57,7 @@ services:
     # remove the "127.0.0.1:" prefix
     ports:
       #- 8980:8980
-      - - ${ERP_SERVER_DEPLOYMENT_PROD_PORT}
+      - ${ERP_SERVER_DEPLOYMENT_PROD_PORT}
       #- 8977:8977
 #  erpsystem-postgresql:
 #    image: postgres:13.4
