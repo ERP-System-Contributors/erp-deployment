@@ -1,5 +1,5 @@
-This is the client server deployment
+This is the client, system and elasticsearch servers deployment
 
 Simply run
 
-" forever start server.js"
+"docker-compose up -d"
