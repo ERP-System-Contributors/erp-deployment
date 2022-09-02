@@ -19,9 +19,9 @@
 version: '3.3'
 services:
   erp-client-web:
-    image: ghacupha/erp-client:0.1.8-SNAPSHOT
-    volumes:
-    - ./templates:/etc/nginx/templates
+    image: ghacupha/erp-client:0.1.9-SNAPSHOT
+    # volumes:
+    # - ./templates:/etc/nginx/templates
     environment:
       # - SERVER_API_URL="http://localhost:8980/"
       # - SERVER_API_URL_URL=http://localhost:8980
@@ -32,8 +32,8 @@ services:
       - SERVER_API_WS_URL=${SERVER_API_WS_URL}
       - ERP_SYSTEM_DEV_PORT=${ERP_SYSTEM_DEV_PORT}
       - ERP_CLIENT_DEV_PORT=${ERP_CLIENT_DEV_PORT}
-      # - SERVER_API_DOCKER_DEPLOY_HOST=${SERVER_API_DOCKER_DEPLOY_HOST}
-      # - SERVER_API_DOCKER_DEPLOY_PORT=${SERVER_API_DOCKER_DEPLOY_PORT}
+      - SERVER_API_DOCKER_DEPLOY_HOST=${SERVER_API_DOCKER_DEPLOY_HOST}
+      - SERVER_API_DOCKER_DEPLOY_PORT=${SERVER_API_DOCKER_DEPLOY_PORT}
     ports:
       #- "8981:80"
       - ${ERP_CLIENT_DEPLOYMENT_PROD_PORT}
