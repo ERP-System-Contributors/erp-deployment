@@ -21,7 +21,7 @@
 version: '3.3'
 services:
   erp-system-server:
-    image: ghacupha/erp-system:0.1.5-SNAPSHOT
+    image: ghacupha/erp-system:0.1.7-SNAPSHOT
     volumes:
       - ./logs/:/logs/
       - ./reports-directory/:/reports-directory/
@@ -52,6 +52,7 @@ services:
       - SECURITY_AUTHENTICATION_JWT_BASE64_SECRET=${SECURITY_AUTHENTICATION_JWT_BASE64_SECRET}
       - UPLOADS_SIZE=${UPLOADS_SIZE}
       - SANDBOX_INSTANCE_URLS=${SANDBOX_INSTANCE_URLS}
+      - ERP_REINDEXER_INTERVAL=${ERP_REINDEXER_INTERVAL}
       # - LOGGING_CONFIG=${LOGGING_CONFIG}
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
@@ -87,7 +88,7 @@ services:
       - 'discovery.type=single-node'
 
   erp-client-web:
-    image: ghacupha/erp-client:0.3.0-SNAPSHOT
+    image: ghacupha/erp-client:0.5.0-SNAPSHOT
     # For some, even now uknown reason, the below configuration prevents rather than helps
     # a successful substitution. What gives?
     # volumes:
