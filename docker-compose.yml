@@ -88,7 +88,7 @@ services:
       - 'discovery.type=single-node'
 
   erp-client-web:
-    image: ghacupha/erp-client:0.5.0-SNAPSHOT
+    image: ghacupha/erp-client:0.4.0-SNAPSHOT
     # For some, even now uknown reason, the below configuration prevents rather than helps
     # a successful substitution. What gives?
     # volumes:
