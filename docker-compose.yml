@@ -1,5 +1,5 @@
 #
-# Erp System - Baruch Series
+# Erp System - Caleb Series
 # Copyright © 2021 - 2022 Edwin Njeru (mailnjeru@gmail.com)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 version: '3.3'
 services:
   erp-system-server:
-    image: ghacupha/erp-system:0.1.7-SNAPSHOT
+    image: ghacupha/erp-system:0.1.8-SNAPSHOT
     volumes:
       - ./logs/:/logs/
       - ./reports-directory/:/reports-directory/
@@ -88,7 +88,7 @@ services:
       - 'discovery.type=single-node'
 
   erp-client-web:
-    image: ghacupha/erp-client:0.4.0-SNAPSHOT
+    image: ghacupha/erp-client:0.5.0-SNAPSHOT
     # For some, even now uknown reason, the below configuration prevents rather than helps
     # a successful substitution. What gives?
     # volumes:

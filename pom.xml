@@ -9,7 +9,7 @@
     <artifactId>erp</artifactId>
     <version>SNAPSHOT RELEASES</version>
     <name>Erp System</name>
-    <description>Baruch Series</description>
+    <description>Caleb Series</description>
 
     <repositories>
         <!-- jhipster-needle-maven-repository -->
