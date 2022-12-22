@@ -2,5 +2,6 @@ logs/
 node_modules/
 generated-reports/
 reports-directory/
+business-documents/
 target/
 .env
