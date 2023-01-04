@@ -3,3 +3,5 @@ logs/
 delete.*
 target/
 .env
+business-documents/
+

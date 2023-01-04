@@ -21,7 +21,7 @@
 version: '3.3'
 services:
   erp-system-server:
-    image: ghacupha/erp-system:0.2.0
+    image: ghacupha/erp-system:0.3.0-SNAPSHOT
     volumes:
       - ./logs/:/logs/
       - ./reports-directory/:/reports-directory/
@@ -89,7 +89,7 @@ services:
       - 'discovery.type=single-node'
 
   erp-client-web:
-    image: ghacupha/erp-client:0.7.0
+    image: ghacupha/erp-client:0.9.0-SNAPSHOT
     # For some, even now uknown reason, the below configuration prevents rather than helps
     # a successful substitution. What gives?
     # volumes:
