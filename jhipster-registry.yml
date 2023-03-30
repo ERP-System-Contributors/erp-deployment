@@ -1,5 +1,5 @@
 # This configuration is intended for development purpose, it's **your** responsibility to harden it for production
-version: '3.3'
+version: '2'
 services:
   jhipster-registry:
     image: jhipster/jhipster-registry:v7.3.0
@@ -21,5 +21,23 @@ services:
       # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_PATHS=central-config
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
+    networks:
+      erp_net:
+        ipv4_address: 192.168.2.10
+    extra_hosts:
+      - "erp0:192.168.1.10"
+      - "erp1:192.168.1.11"
+      - "erp2:192.168.1.12"
+      - "dbus-n1:192.168.2.81"
     ports:
-      - 8761:8761
+      - 10.60.27.22:8761:8761
+networks:
+    erp_net:
+        driver: macvlan
+        driver_opts:
+            parent: eth0
+        ipam:
+            config:
+                - 
+                  subnet: 192.168.2.0/24
+                  gateway: 192.168.2.1

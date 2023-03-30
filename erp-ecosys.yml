@@ -20,50 +20,50 @@
 # version: '3.8'
 version: '3.3'
 services:
-  jhipster-registry:
-    image: jhipster/jhipster-registry:v7.3.0
-    volumes:
-      - ./central-server-config:/central-config
-    # When run with the "dev" Spring profile, the JHipster Registry will
-    # read the config from the local filesystem (central-server-config directory)
-    # When run with the "prod" Spring profile, it will read the configuration from a Git repository
-    # See https://www.jhipster.tech/jhipster-registry/#spring-cloud-config
-    environment:
-      - _JAVA_OPTIONS=-Xmx512m -Xms256m
-      - SPRING_PROFILES_ACTIVE=dev,api-docs
-      - SPRING_SECURITY_USER_PASSWORD=admin
-      - JHIPSTER_REGISTRY_PASSWORD=admin
-      - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=native
-      - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_LOCATIONS=file:./central-config/localhost-config/
-      # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=git
-      # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_URI=https://github.com/jhipster/jhipster-registry/
-      # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_PATHS=central-config
-    # If you want to expose these ports outside your dev PC,
-    # remove the "127.0.0.1:" prefix
-    # networks:
-    #   erp_net:
-    #     ipv4_address: 192.168.2.10
-    # extra_hosts:
-    #   - "erp0:192.168.1.10"
-    #   - "erp1:192.168.1.11"
-    #   - "erp2:192.168.1.12"
-    #   - "dbus-n1:192.168.2.81"
-    ports:
-      - 8761:8761
+    jhipster-registry:
+      image: jhipster/jhipster-registry:v7.3.0
+      volumes:
+        - ./central-server-config:/central-config
+      # When run with the "dev" Spring profile, the JHipster Registry will
+      # read the config from the local filesystem (central-server-config directory)
+      # When run with the "prod" Spring profile, it will read the configuration from a Git repository
+      # See https://www.jhipster.tech/jhipster-registry/#spring-cloud-config
+      environment:
+        - _JAVA_OPTIONS=-Xmx512m -Xms256m
+        - SPRING_PROFILES_ACTIVE=dev,api-docs
+        - SPRING_SECURITY_USER_PASSWORD=admin
+        - JHIPSTER_REGISTRY_PASSWORD=admin
+        - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=native
+        - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_LOCATIONS=file:./central-config/localhost-config/
+        # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=git
+        # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_URI=https://github.com/jhipster/jhipster-registry/
+        # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_PATHS=central-config
+      # If you want to expose these ports outside your dev PC,
+      # remove the "127.0.0.1:" prefix
+      networks:
+        erp_net:
+          ipv4_address: 192.168.2.10
+      extra_hosts:
+        - "erp0:192.168.1.10"
+        - "erp1:192.168.1.11"
+        - "erp2:192.168.1.12"
+        - "dbus-n1:192.168.2.81"
+      ports:
+        - 10.60.27.22:8761:8761
 
-  # networks:
-  #     erp_net:
-  #         driver: macvlan
-  #         driver_opts:
-  #             parent: eth0
-  #         ipam:
-  #             config:
-  #                 - 
-  #                   subnet: 192.168.2.0/24
-  #                   gateway: 192.168.2.1
+  networks:
+      erp_net:
+          driver: macvlan
+          driver_opts:
+              parent: eth0
+          ipam:
+              config:
+                  - 
+                    subnet: 192.168.2.0/24
+                    gateway: 192.168.2.1
 
   erp-system-server:
-    image: ghacupha/erp-system:1.0.3-SNAPSHOT
+    image: ghacupha/erp-system:1.0.2-SNAPSHOT
     volumes:
       - ./logs/:/logs/
       - ./reports-directory/:/reports-directory/
@@ -151,9 +151,9 @@ services:
       - SERVER_API_WS_URL=${SERVER_API_WS_URL}
       - ERP_SYSTEM_DEV_PORT=${ERP_SYSTEM_DEV_PORT}
       - ERP_CLIENT_DEV_PORT=${ERP_CLIENT_DEV_PORT}
-      - SERVER_API_DOCKER_DEPLOY_HOST=${SERVER_API_DOCKER_DEPLOY_HOST}
-      - SERVER_API_DOCKER_DEPLOY_HOST=http://erp-system-server
-      #- SERVER_API_DOCKER_DEPLOY_PORT=${SERVER_API_DOCKER_DEPLOY_PORT}
+      #- SERVER_API_DOCKER_DEPLOY_HOST=${SERVER_API_DOCKER_DEPLOY_HOST}
+      - SERVER_API_DOCKER_DEPLOY_HOST=erp-system-server
+      - SERVER_API_DOCKER_DEPLOY_PORT=${SERVER_API_DOCKER_DEPLOY_PORT}
     ports:
       #- "8981:80"
       - ${ERP_CLIENT_DEPLOYMENT_PROD_PORT}
