@@ -63,7 +63,7 @@ services:
   #                   gateway: 192.168.2.1
 
   erp-system-server:
-    image: ghacupha/erp-system:1.0.3-SNAPSHOT
+    image: ghacupha/erp-system:1.0.4-SNAPSHOT
     volumes:
       - ./logs/:/logs/
       - ./reports-directory/:/reports-directory/
