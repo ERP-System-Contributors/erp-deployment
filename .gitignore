@@ -5,3 +5,4 @@ target/
 .env
 business-documents/
 env.txt
+reports-directory/
