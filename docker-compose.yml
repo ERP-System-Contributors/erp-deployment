@@ -92,7 +92,7 @@ services:
       - erp-system-network
 
   erp-system-server:
-    image: ghacupha/erp-system:1.5.4
+    image: ghacupha/erp-system:1.5.5
     volumes:
       - ./logs/:/logs/
       - ./reports-directory/:/reports-directory/
@@ -142,7 +142,7 @@ services:
       - erp-system-network
 
   erp-client-web:
-    image: ghacupha/erp-client:1.5.3
+    image: ghacupha/erp-client:1.5.5
     # For some, even now uknown reason, the below nginx configuration prevents rather than helps
     # a successful substitution. What gives?
     # volumes:
