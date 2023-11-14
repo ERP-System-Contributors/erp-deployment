@@ -19,9 +19,11 @@
 # Common configuration shared between all applications
 configserver:
   name: Docker JHipster Registry
-  status: Connected to the JHipster Registry running in Docker
+  status: ERP client is now connected to the JHipster Registry running in Docker
 
 jhipster:
+  registry:
+    password: admin
   security:
     authentication:
       jwt:
