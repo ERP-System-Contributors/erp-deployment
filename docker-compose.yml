@@ -86,20 +86,20 @@ services:
       - 9300:9300
     environment:
       - "discovery.type=single-node"
-      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+      - "ES_JAVA_OPTS=-Xms2048m -Xmx2048m"
       # - "index.mapping.total_fields.limit=2000"
     networks:
       - erp-system-network
 
   erp-system-server:
-    image: ghacupha/erp-system:1.5.7
+    image: ghacupha/erp-system:1.6.5
     volumes:
       - ./logs/:/logs/
       - ./reports-directory/:/reports-directory/
       - ./generated-reports/:/generated-reports/
       - ./business-documents/:/business-documents/
     environment:
-      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - _JAVA_OPTIONS=-Xmx4096m -XX:MaxRAMPercentage=50.0 -XX:MinRAMPercentage=80.0 -XX:InitialRAMPercentage=50.0 -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8
       - SPRING_PROFILES_ACTIVE=prod,api-docs
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:admin@jhipster-registry:8761/eureka
@@ -143,7 +143,7 @@ services:
       - erp-system-network
 
   erp-client-web:
-    image: ghacupha/erp-client:1.5.5
+    image: ghacupha/erp-client:1.6.4
     # For some, even now uknown reason, the below nginx configuration prevents rather than helps
     # a successful substitution. What gives?
     # volumes:
