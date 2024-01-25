@@ -25,8 +25,35 @@ networks:
     driver: bridge
 
 services:
+  erpsystem-postgresql:
+    image: postgres:13.4
+    volumes:
+      - ./postgresql-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${PG_DATABASE_DEV_USER}
+      - POSTGRES_PASSWORD=${PG_DATABASE_PROD_PASSWORD}
+      - POSTGRES_DB=erpSystem
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - 5532:5432
+    networks:
+      - erp-system-network
+      
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - 8982:80
+    depends_on:
+      - erpsystem-postgresql
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.5
+    volumes:
+      - ./zookeeper-data:/var/lib/zookeeper/data
+      - ./zookeeper-logs:/var/lib/zookeeper/log
     environment:
       - ZOOKEEPER_CLIENT_PORT=2181
       - ZOOKEEPER_TICK_TIME=2000
@@ -44,6 +71,8 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - ./kafka-queue:/var/lib/kafka/data
     networks:
       - erp-system-network
 
@@ -75,7 +104,7 @@ services:
   erpsystem-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.13.3
     volumes:
-     - ./search-index-directory/:/search-index-directory/
+      - ./search-index-directory:/usr/share/elasticsearch/data
     #   - ~/volumes/jhipster/erpSystem/elasticsearch/:/usr/share/elasticsearch/data/
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
@@ -92,7 +121,7 @@ services:
       - erp-system-network
 
   erp-system-server:
-    image: ghacupha/erp-system:1.6.5
+    image: ghacupha/erp-system:1.7.1
     volumes:
       - ./logs/:/logs/
       - ./reports-directory/:/reports-directory/
@@ -132,6 +161,7 @@ services:
       - ERP_REINDEXER_INTERVAL_DEV=${ERP_REINDEXER_INTERVAL_DEV}
       - ERP_REINDEXER_INTERVAL_PROD=${ERP_REINDEXER_INTERVAL_PROD}
       - ERP_DOCUMENTS_MAX_FILE_SIZE=${ERP_DOCUMENTS_MAX_FILE_SIZE}
+      - ERP_INDEX_ENABLED=${ERP_INDEX_ENABLED}
       # - LOGGING_CONFIG=${LOGGING_CONFIG}
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
@@ -143,7 +173,7 @@ services:
       - erp-system-network
 
   erp-client-web:
-    image: ghacupha/erp-client:1.6.4
+    image: ghacupha/erp-client:1.7.1
     # For some, even now uknown reason, the below nginx configuration prevents rather than helps
     # a successful substitution. What gives?
     # volumes:
