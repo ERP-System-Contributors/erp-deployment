@@ -48,12 +48,14 @@ services:
       - 8982:80
     depends_on:
       - erpsystem-postgresql
+    networks:
+      - erp-system-network
 
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.5
-    volumes:
-      - ./zookeeper-data:/var/lib/zookeeper/data
-      - ./zookeeper-logs:/var/lib/zookeeper/log
+    # volumes:
+    #   - ./zookeeper-data:/var/lib/zookeeper/data
+    #   - ./zookeeper-logs:/var/lib/zookeeper/log
     environment:
       - ZOOKEEPER_CLIENT_PORT=2181
       - ZOOKEEPER_TICK_TIME=2000
@@ -65,14 +67,26 @@ services:
     ports:
       - 9092:9092
     environment:
+    #   KAFKA_BROKER_ID: 1
+    #   KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    #   KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+    #   KAFKA_ADVERTISED_LISTENERS: INSIDE://0.0.0.0:29092,OUTSIDE://0.0.0.0:9092
+    #   KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+    #   KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+    #   KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    #   KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:29092,OUTSIDE://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: DOCKER_INTERNAL:PLAINTEXT,DOCKER_EXTERNAL:PLAINTEXT
+      KAFKA_LISTENERS: DOCKER_INTERNAL://:29092,DOCKER_EXTERNAL://:9092
+      KAFKA_ADVERTISED_LISTENERS: DOCKER_INTERNAL://kafka:29092,DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: DOCKER_INTERNAL
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    volumes:
-      - ./kafka-queue:/var/lib/kafka/data
+    depends_on:
+      - zookeeper
+
+    # volumes:
+    #   - ./kafka-queue:/var/lib/kafka/data
     networks:
       - erp-system-network
 
@@ -121,7 +135,7 @@ services:
       - erp-system-network
 
   erp-system-server:
-    image: ghacupha/erp-system:1.7.1
+    image: ghacupha/erp-system:1.7.2-SNAPSHOT
     volumes:
       - ./logs/:/logs/
       - ./reports-directory/:/reports-directory/
@@ -139,7 +153,8 @@ services:
       - SPRING_DATASOURCE_URL=${LOCAL_PG_SERVER}/${ERP_SYSTEM_PROD_DB}
       - SPRING_LIQUIBASE_URL=${LOCAL_PG_SERVER}/${ERP_SYSTEM_PROD_DB}
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
-      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka:9092
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS="kafka:9092"
+      - KAFKA_BOOTSTRAPSERVERS="kafka:9092"
       - SPRING_ELASTICSEARCH_REST_URIS=http://erpsystem-elasticsearch:9200
       #- SPRING_ELASTICSEARCH_REST_URIS=${SPRING_DATA_JEST_URI}
       - ERP_SYSTEM_PROD_DB=${ERP_SYSTEM_PROD_DB}
@@ -162,37 +177,21 @@ services:
       - ERP_REINDEXER_INTERVAL_PROD=${ERP_REINDEXER_INTERVAL_PROD}
       - ERP_DOCUMENTS_MAX_FILE_SIZE=${ERP_DOCUMENTS_MAX_FILE_SIZE}
       - ERP_INDEX_ENABLED=${ERP_INDEX_ENABLED}
-      # - LOGGING_CONFIG=${LOGGING_CONFIG}
-    # If you want to expose these ports outside your dev PC,
-    # remove the "127.0.0.1:" prefix
     ports:
       #- 8980:8980
       - ${ERP_SERVER_DEPLOYMENT_PROD_PORT}
-      #- 8977:8977
     networks:
       - erp-system-network
 
   erp-client-web:
-    image: ghacupha/erp-client:1.7.1
-    # For some, even now uknown reason, the below nginx configuration prevents rather than helps
-    # a successful substitution. What gives?
-    # volumes:
-    # - ./templates:/etc/nginx/templates
+    image: ghacupha/erp-client:1.7.2
     environment:
-      # - SERVER_API_URL="http://localhost:8980/"
-      # - SERVER_API_URL_URL=http://localhost:8980
-      # - SERVER_API_WS_URL=ws://127.0.0.1:8980
-      # - ERP_SYSTEM_DEV_PORT=8980
-      # - SERVER_API_DOCKER_DEPLOY_HOST=http://172.21.0.3
-      # - SERVER_API_DOCKER_DEPLOY_PORT=8980
       - SERVER_API_URL=${SERVER_API_URL}
       - SERVER_API_URL_URL=${SERVER_API_URL_URL}
       - SERVER_API_WS_URL=${SERVER_API_WS_URL}
       - ERP_SYSTEM_DEV_PORT=${ERP_SYSTEM_DEV_PORT}
       - ERP_CLIENT_DEV_PORT=${ERP_CLIENT_DEV_PORT}
-      #- SERVER_API_DOCKER_DEPLOY_HOST=${SERVER_API_DOCKER_DEPLOY_HOST}
       - SERVER_API_DOCKER_DEPLOY_HOST=http://erp-system-server
-      #- SERVER_API_DOCKER_DEPLOY_PORT=${SERVER_API_DOCKER_DEPLOY_PORT}
     ports:
       #- "8981:80"
       - ${ERP_CLIENT_DEPLOYMENT_PROD_PORT}
@@ -218,10 +217,6 @@ services:
 
   ng-gdi-staging:
     image: ghacupha/ng-gdi-staging-794:0.0.1-SNAPSHOT
-    # For some, even now uknown reason, the below nginx configuration prevents rather than helps
-    # a successful substitution. What gives?
-    # volumes:
-    # - ./templates:/etc/nginx/templates
     environment:
       - SERVER_API_URL="http://erp-system-server:${SERVER_API_DOCKER_DEPLOY_PORT}/"
       - SERVER_API_URL_URL=http://erp-system-server
