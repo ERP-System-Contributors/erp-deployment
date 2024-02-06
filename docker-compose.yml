@@ -53,9 +53,9 @@ services:
 
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.5
-    # volumes:
-    #   - ./zookeeper-data:/var/lib/zookeeper/data
-    #   - ./zookeeper-logs:/var/lib/zookeeper/log
+    volumes:
+      - ./zookeeper-data:/var/lib/zookeeper/data
+      - ./zookeeper-logs:/var/lib/zookeeper/log
     environment:
       - ZOOKEEPER_CLIENT_PORT=2181
       - ZOOKEEPER_TICK_TIME=2000
@@ -76,8 +76,8 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     depends_on:
       - zookeeper
-    # volumes:
-    #   - ./kafka-queue:/var/lib/kafka/data
+    volumes:
+      - ./kafka-queue:/var/lib/kafka/data
     networks:
       - erp-system-network
 
