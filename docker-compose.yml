@@ -25,31 +25,31 @@ networks:
     driver: bridge
 
 services:
-  erpsystem-postgresql:
-    image: postgres:13.4
-    volumes:
-      - ./postgresql-data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=${PG_DATABASE_DEV_USER}
-      - POSTGRES_PASSWORD=${PG_DATABASE_PROD_PASSWORD}
-      - POSTGRES_DB=erpSystem
-      - POSTGRES_HOST_AUTH_METHOD=trust
-    ports:
-      - 5532:5432
-    networks:
-      - erp-system-network
+  # erpsystem-postgresql:
+  #   image: postgres:13.4
+  #   volumes:
+  #     - ./postgresql-data:/var/lib/postgresql/data
+  #   environment:
+  #     - POSTGRES_USER=${PG_DATABASE_DEV_USER}
+  #     - POSTGRES_PASSWORD=${PG_DATABASE_PROD_PASSWORD}
+  #     - POSTGRES_DB=erpSystem
+  #     - POSTGRES_HOST_AUTH_METHOD=trust
+  #   ports:
+  #     - 5532:5432
+  #   networks:
+  #     - erp-system-network
       
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
-    ports:
-      - 8982:80
-    depends_on:
-      - erpsystem-postgresql
-    networks:
-      - erp-system-network
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+  #     - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+  #   ports:
+  #     - 8982:80
+  #   depends_on:
+  #     - erpsystem-postgresql
+  #   networks:
+  #     - erp-system-network
 
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.5
@@ -110,9 +110,6 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.13.3
     volumes:
       - ./search-index-directory:/usr/share/elasticsearch/data
-    #   - ~/volumes/jhipster/erpSystem/elasticsearch/:/usr/share/elasticsearch/data/
-    # If you want to expose these ports outside your dev PC,
-    # remove the "127.0.0.1:" prefix
     ports:
       #- 127.0.0.1:9200:9200
       - 9200:9200
@@ -126,7 +123,7 @@ services:
       - erp-system-network
 
   erp-system-server:
-    image: ghacupha/erp-system:1.7.2-SNAPSHOT
+    image: ghacupha/erp-system:1.7.3
     volumes:
       - ./logs/:/logs/
       - ./reports-directory/:/reports-directory/
@@ -146,6 +143,7 @@ services:
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka:29092
       - KAFKA_BOOTSTRAPSERVERS=kafka:29092
+      - KAFKA_REPLICATION_FACTOR=8
       - SPRING_ELASTICSEARCH_REST_URIS=http://erpsystem-elasticsearch:9200
       #- SPRING_ELASTICSEARCH_REST_URIS=${SPRING_DATA_JEST_URI}
       - ERP_SYSTEM_PROD_DB=${ERP_SYSTEM_PROD_DB}
@@ -173,6 +171,8 @@ services:
       - ${ERP_SERVER_DEPLOYMENT_PROD_PORT}
     networks:
       - erp-system-network
+    depends_on:
+      - kafka
 
   erp-client-web:
     image: ghacupha/erp-client:1.7.2
