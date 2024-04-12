@@ -66,6 +66,7 @@ services:
     image: confluentinc/cp-kafka:5.5.5
     ports:
       - 9092:9092
+      - 29092:29092
     environment:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: DOCKER_INTERNAL:PLAINTEXT,DOCKER_EXTERNAL:PLAINTEXT
       KAFKA_LISTENERS: DOCKER_INTERNAL://:29092,DOCKER_EXTERNAL://:9092
@@ -123,7 +124,7 @@ services:
       - erp-system-network
 
   erp-system-server:
-    image: ghacupha/erp-system:1.7.3
+    image: ghacupha/erp-system:1.7.7
     volumes:
       - ./logs/:/logs/
       - ./reports-directory/:/reports-directory/
@@ -166,6 +167,7 @@ services:
       - ERP_REINDEXER_INTERVAL_PROD=${ERP_REINDEXER_INTERVAL_PROD}
       - ERP_DOCUMENTS_MAX_FILE_SIZE=${ERP_DOCUMENTS_MAX_FILE_SIZE}
       - ERP_INDEX_ENABLED=${ERP_INDEX_ENABLED}
+      - ERP_INDEX_REBUILD_ENABLED=${ERP_INDEX_REBUILD_ENABLED}
     ports:
       #- 8980:8980
       - ${ERP_SERVER_DEPLOYMENT_PROD_PORT}
@@ -175,7 +177,7 @@ services:
       - kafka
 
   erp-client-web:
-    image: ghacupha/erp-client:1.7.2
+    image: ghacupha/erp-client:1.7.5
     environment:
       - SERVER_API_URL=${SERVER_API_URL}
       - SERVER_API_URL_URL=${SERVER_API_URL_URL}
@@ -217,5 +219,19 @@ services:
       - SERVER_API_DOCKER_DEPLOY_PORT=${SERVER_API_DOCKER_DEPLOY_PORT}
     ports:
       - "8987:80"
+    networks:
+      - erp-system-network
+
+  erp-client-ng-prep-web:
+    image: ghacupha/erp-client-ng-prep:0.0.2-SNAPSHOT
+    environment:
+      - SERVER_API_URL=${SERVER_API_URL}
+      - SERVER_API_URL_URL=${SERVER_API_URL_URL}
+      - SERVER_API_WS_URL=${SERVER_API_WS_URL}
+      - ERP_SYSTEM_DEV_PORT=${ERP_SYSTEM_DEV_PORT}
+      - ERP_CLIENT_NG_PREP_DEV_PORT=8986
+      - SERVER_API_DOCKER_DEPLOY_HOST=http://erp-system-server
+    ports:
+      - "8986:80"
     networks:
       - erp-system-network
