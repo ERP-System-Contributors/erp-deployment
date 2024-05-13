@@ -124,7 +124,7 @@ services:
       - erp-system-network
 
   erp-system-server:
-    image: ghacupha/erp-system:1.7.7
+    image: ghacupha/erp-system:1.8.0
     volumes:
       - ./logs/:/logs/
       - ./reports-directory/:/reports-directory/
@@ -168,6 +168,8 @@ services:
       - ERP_DOCUMENTS_MAX_FILE_SIZE=${ERP_DOCUMENTS_MAX_FILE_SIZE}
       - ERP_INDEX_ENABLED=${ERP_INDEX_ENABLED}
       - ERP_INDEX_REBUILD_ENABLED=${ERP_INDEX_REBUILD_ENABLED}
+      - ERP_SYSTEM_EMAIL_USER=${ERP_SYSTEM_EMAIL_USER}
+      - ERP_SYSTEM_EMAIL_PASSWORD=${ERP_SYSTEM_EMAIL_PASSWORD}
     ports:
       #- 8980:8980
       - ${ERP_SERVER_DEPLOYMENT_PROD_PORT}
@@ -177,7 +179,7 @@ services:
       - kafka
 
   erp-client-web:
-    image: ghacupha/erp-client:1.7.5
+    image: ghacupha/erp-client:1.7.6
     environment:
       - SERVER_API_URL=${SERVER_API_URL}
       - SERVER_API_URL_URL=${SERVER_API_URL_URL}
@@ -208,30 +210,30 @@ services:
   #     - erp-system-network
 
 
-  ng-gdi-staging:
-    image: ghacupha/ng-gdi-staging-794:0.0.1-SNAPSHOT
-    environment:
-      - SERVER_API_URL="http://erp-system-server:${SERVER_API_DOCKER_DEPLOY_PORT}/"
-      - SERVER_API_URL_URL=http://erp-system-server
-      - ERP_SYSTEM_DEV_PORT=${ERP_SYSTEM_DEV_PORT}
-      - ERP_CLIENT_DEV_PORT=${ERP_CLIENT_DEV_PORT}
-      - SERVER_API_DOCKER_DEPLOY_HOST=http://erp-system-server
-      - SERVER_API_DOCKER_DEPLOY_PORT=${SERVER_API_DOCKER_DEPLOY_PORT}
-    ports:
-      - "8987:80"
-    networks:
-      - erp-system-network
+  # ng-gdi-staging:
+  #   image: ghacupha/ng-gdi-staging-794:0.0.1-SNAPSHOT
+  #   environment:
+  #     - SERVER_API_URL="http://erp-system-server:${SERVER_API_DOCKER_DEPLOY_PORT}/"
+  #     - SERVER_API_URL_URL=http://erp-system-server
+  #     - ERP_SYSTEM_DEV_PORT=${ERP_SYSTEM_DEV_PORT}
+  #     - ERP_CLIENT_DEV_PORT=${ERP_CLIENT_DEV_PORT}
+  #     - SERVER_API_DOCKER_DEPLOY_HOST=http://erp-system-server
+  #     - SERVER_API_DOCKER_DEPLOY_PORT=${SERVER_API_DOCKER_DEPLOY_PORT}
+  #   ports:
+  #     - "8987:80"
+  #   networks:
+  #     - erp-system-network
 
-  erp-client-ng-prep-web:
-    image: ghacupha/erp-client-ng-prep:0.0.2-SNAPSHOT
-    environment:
-      - SERVER_API_URL=${SERVER_API_URL}
-      - SERVER_API_URL_URL=${SERVER_API_URL_URL}
-      - SERVER_API_WS_URL=${SERVER_API_WS_URL}
-      - ERP_SYSTEM_DEV_PORT=${ERP_SYSTEM_DEV_PORT}
-      - ERP_CLIENT_NG_PREP_DEV_PORT=8986
-      - SERVER_API_DOCKER_DEPLOY_HOST=http://erp-system-server
-    ports:
-      - "8986:80"
-    networks:
-      - erp-system-network
+  # erp-client-ng-prep-web:
+  #   image: ghacupha/erp-client-ng-prep:0.0.2-SNAPSHOT
+  #   environment:
+  #     - SERVER_API_URL=${SERVER_API_URL}
+  #     - SERVER_API_URL_URL=${SERVER_API_URL_URL}
+  #     - SERVER_API_WS_URL=${SERVER_API_WS_URL}
+  #     - ERP_SYSTEM_DEV_PORT=${ERP_SYSTEM_DEV_PORT}
+  #     - ERP_CLIENT_NG_PREP_DEV_PORT=8986
+  #     - SERVER_API_DOCKER_DEPLOY_HOST=http://erp-system-server
+  #   ports:
+  #     - "8986:80"
+  #   networks:
+  #     - erp-system-network
